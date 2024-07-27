@@ -1,5 +1,7 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
+import './App.css';
+import landingGradient from './assets/landing-gradient.svg';
 
 const HELLO_QUERY = gql`
   query Hello {
@@ -21,10 +23,21 @@ const App: React.FC = () => {
   if (errorHello || errorBlock) return <p>Error: {errorHello ? errorHello.message : errorBlock.message}</p>;
 
   return (
-    <div>
-      <h1>Welcome to the NFT Gaming Platform</h1>
-      <p>{dataHello.hello}</p>
-      <p>Latest Block: {dataBlock.latestBlock}</p>
+    <div className="landing-page">
+      <header className="landing-header">
+        <img src={landingGradient} alt="Gradient Background" className="landing-gradient" />
+        <div className="landing-content">
+          <h1>ALEA</h1>
+          <p className="subtitle">Esports Betting Platform Powered by Polkadot</p>
+          <div className="dynamic-content">
+            <p>{dataHello.hello}</p>
+            <p>Latest Block: {dataBlock.latestBlock}</p>
+          </div>
+          <div className="scroll-indicator">
+            <span>&#9660;</span>
+          </div>
+        </div>
+      </header>
     </div>
   );
 };
