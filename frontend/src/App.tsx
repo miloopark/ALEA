@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const { loading: loadingBlock, error: errorBlock, data: dataBlock } = useQuery(LATEST_BLOCK_QUERY);
 
   if (loadingHello || loadingBlock) return <p>Loading...</p>;
-  if (errorHello || errorBlock) return <p>Error: {errorHello ? errorHello.message : errorBlock.message}</p>;
+  if (errorHello || errorBlock) return <p>Error: {errorHello ? errorHello.message : errorBlock?.message}</p>;
 
   return (
     <div className="landing-page">
