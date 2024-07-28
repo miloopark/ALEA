@@ -1,44 +1,31 @@
 import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import LandingPage from './components/LandingPage';
+import LoginPage from './components/LoginPage';
+import CSGOMatch from './components/CSGOMatch';
 import './App.css';
-import landingGradient from './assets/landing-gradient.svg';
 
-const HELLO_QUERY = gql`
-  query Hello {
-    hello
-  }
-`;
-
-const LATEST_BLOCK_QUERY = gql`
-  query LatestBlock {
-    latestBlock
-  }
-`;
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  cache: new InMemoryCache()
+});
 
 const App: React.FC = () => {
-  const { loading: loadingHello, error: errorHello, data: dataHello } = useQuery(HELLO_QUERY);
-  const { loading: loadingBlock, error: errorBlock, data: dataBlock } = useQuery(LATEST_BLOCK_QUERY);
-
-  if (loadingHello || loadingBlock) return <p>Loading...</p>;
-  if (errorHello || errorBlock) return <p>Error: {errorHello ? errorHello.message : errorBlock?.message}</p>;
-
   return (
-    <div className="landing-page">
-      <header className="landing-header">
-        <img src={landingGradient} alt="Gradient Background" className="landing-gradient" />
-        <div className="landing-content">
-          <h1>ALEA</h1>
-          <p className="subtitle">Esports Betting Platform Powered by Polkadot</p>
-          <div className="dynamic-content">
-            <p>{dataHello.hello}</p>
-            <p>Latest Block: {dataBlock.latestBlock}</p>
-          </div>
-          <div className="scroll-indicator">
-            <span>&#9660;</span>
-          </div>
+    <ApolloProvider client={client}>
+      <Router>
+        <div className="navbar">
+          <Link to="/">Home</Link>
+          <Link to="/csgo-match">CSGO Match</Link>
         </div>
-      </header>
-    </div>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/csgo-match" element={<CSGOMatch />} />
+          <Route path="/" element={<LandingPage />} />
+        </Routes>
+      </Router>
+    </ApolloProvider>
   );
 };
 

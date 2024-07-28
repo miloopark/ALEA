@@ -10,6 +10,9 @@ const { json } = require('body-parser');
 
 dotenv.config();
 
+console.log('Private Key:', process.env.PRIVATE_KEY);
+console.log('Mongo URI:', process.env.MONGO_URI);
+
 const startServer = async () => {
   const app = express();
 
@@ -28,7 +31,10 @@ const startServer = async () => {
   );
 
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error.message);
